@@ -16,7 +16,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ungabhotel.databinding.FragmentHomeBinding;
+import com.example.ungabhotel.model.Booking;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -36,7 +38,6 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // ---
         InitializeComponents();
 
         final TextView textView = binding.textHome;
@@ -56,25 +57,33 @@ public class HomeFragment extends Fragment {
     // display the initial list of available booking
     private void DisplayBooking()
     {
-        List<String> availableBookings = dbHelper.getAvailableBooking();
+        List<Booking> availableBookings = dbHelper.getBookings();
+        List<String> bookingStrings = new ArrayList<>();
+
+        for(Booking booking : availableBookings)
+        {
+            bookingStrings.add("Room: " + booking.getRoom().getRoomNumber());
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_list_item_1,
-                availableBookings
+               bookingStrings
         );
         bookingListView.setAdapter(adapter);
 
         bookingListView.setOnItemClickListener((parent, view, pos, id) -> {
-            String selectedBooking = availableBookings.get(position);
+            Booking selectedBooking = availableBookings.get(pos);
 
-            openBookingDetails(selectedBooking); // id dapat to, mamaya na
+            openBookingDetails(selectedBooking);
         });
     }
 
-    private void openBookingDetails(String bookingTitle) // id dapat to, mamaya na
+    // switch to booking details act and passing the selected booking id
+    private void openBookingDetails(Booking booking)
     {
-        Intent intent = new Intent(getActivity(), BookingDetailsActivity.class); // wala pa netong act
-        intent.putExtra("BOOK_TITLE", bookingTitle); // title muna
+        Intent intent = new Intent(getActivity(), BookingDetailsActivite.class);
+        intent.putExtra("BOOKING_ID", booking.getId());
         startActivity(intent);
     }
 
