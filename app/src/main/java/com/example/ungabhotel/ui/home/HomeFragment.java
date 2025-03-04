@@ -19,6 +19,7 @@ import com.example.ungabhotel.databinding.FragmentHomeBinding;
 import com.example.ungabhotel.model.Booking;
 import com.example.ungabhotel.model.Room;
 import com.example.ungabhotel.services.DBHelper;
+import com.example.ungabhotel.ui.search.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private Button searchButton;
+    private Button searchNavButton;
     private ListView roomListView;
     private DBHelper dbHelper;
 
@@ -49,8 +50,8 @@ public class HomeFragment extends Fragment {
 
     private void InitializeComponents()
     {
-        searchButton = binding.searchBtn;
-        searchButton.setOnClickListener(view -> openSearchActivity());
+        searchNavButton = binding.searchNavBtn;
+        searchNavButton.setOnClickListener(view -> openSearchActivity());
 
         roomListView = binding.roomListView;
         DisplayAvailableRoom();
