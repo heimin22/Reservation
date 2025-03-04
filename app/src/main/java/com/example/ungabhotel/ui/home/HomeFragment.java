@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ungabhotel.databinding.FragmentHomeBinding;
 import com.example.ungabhotel.model.Booking;
+import com.example.ungabhotel.model.Room;
+import com.example.ungabhotel.services.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private Button searchButton;
-    private ListView bookingListView;
+    private ListView roomListView;
     private DBHelper dbHelper;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,36 +52,69 @@ public class HomeFragment extends Fragment {
         searchButton = binding.searchBtn;
         searchButton.setOnClickListener(view -> openSearchActivity());
 
-        bookingListView = binding.bookingLists;
-        DisplayBooking();
+        roomListView = binding.roomListView;
+        DisplayAvailableRoom();
+//        DisplayBooking();
     }
 
-    // display the initial list of available booking
-    private void DisplayBooking()
+    private void DisplayAvailableRoom()
     {
-        List<Booking> availableBookings = dbHelper.getBookings();
-        List<String> bookingStrings = new ArrayList<>();
+        List<Room> availableRooms = dbHelper.getAvailableRooms();
+        List<String> roomStringify = new ArrayList<>();
 
-        for(Booking booking : availableBookings)
+        for(Room room : availableRooms)
         {
-            bookingStrings.add("Room: " + booking.getRoom().getRoomNumber());
+            roomStringify.add("Room: " + room.getRoomNumber());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_list_item_1,
-               bookingStrings
+                roomStringify
         );
-        bookingListView.setAdapter(adapter);
 
-        bookingListView.setOnItemClickListener((parent, view, pos, id) -> {
-            Booking selectedBooking = availableBookings.get(pos);
+        roomListView.setAdapter(adapter);
 
-            openBookingDetails(selectedBooking);
+        roomListView.setOnItemClickListener((parent, view, pos, id) -> {
+            Room selectedRoom = availableRooms.get(pos);
+
+            bookRoom(selectedRoom);
         });
     }
 
-    // switch to booking details act and passing the selected booking id
+    private void bookRoom(Room room)
+    {
+        Intent intent = new Intent(getActivity(), BookRoom.class);
+        intent.putExtra("ROOM_NUMBER", room.getRoomNumber());
+        startActivity(intent);
+    }
+
+    // display the initial list of available booking
+//    private void DisplayBooking()
+//    {
+//        List<Booking> availableBookings = dbHelper.getBookings();
+//        List<String> bookingStrings = new ArrayList<>();
+//
+//        for(Booking booking : availableBookings)
+//        {
+//            bookingStrings.add("Room: " + booking.getRoom().getRoomNumber());
+//        }
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+//                requireContext(),
+//                android.R.layout.simple_list_item_1,
+//               bookingStrings
+//        );
+//        bookingListView.setAdapter(adapter);
+//
+//        bookingListView.setOnItemClickListener((parent, view, pos, id) -> {
+//            Booking selectedBooking = availableBookings.get(pos);
+//
+//            openBookingDetails(selectedBooking);
+//        });
+//    }
+
+    // switch to booking details act nd passing the selected booking id
     private void openBookingDetails(Booking booking)
     {
         Intent intent = new Intent(getActivity(), BookingDetailsActivite.class);
