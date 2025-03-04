@@ -27,6 +27,45 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private Button searchButton;
+
+    private ListView bookingListView;
+//    private DBHelper dbHelper;
+//
+//    public View onCreateView(@NonNull LayoutInflater inflater,
+//                             ViewGroup container, Bundle savedInstanceState) {
+//        HomeViewModel homeViewModel =
+//                new ViewModelProvider(this).get(HomeViewModel.class);
+//
+//        dbHelper = new DBHelper(requireContext());
+//
+//        binding = FragmentHomeBinding.inflate(inflater, container, false);
+//        View root = binding.getRoot();
+//
+//        // ---
+//        InitializeComponents();
+//
+//        final TextView textView = binding.textHome;
+//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        return root;
+//    }
+//
+//    private void InitializeComponents()
+//    {
+//        searchButton = binding.searchBtn;
+//        searchButton.setOnClickListener(view -> openSearchActivity());
+//
+//        bookingListView = binding.bookingLists;
+//        DisplayBooking();
+//    }
+//
+//    // display the initial list of available booking
+//    private void DisplayBooking()
+//    {
+//        List<String> availableBookings = dbHelper.getAvailableBooking();
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+//                requireContext(),
+//                android.R.layout.simple_list_item_1,
+//                availableBookings
     private ListView roomListView;
     private DBHelper dbHelper;
 
@@ -105,10 +144,32 @@ public class HomeFragment extends Fragment {
 //                requireContext(),
 //                android.R.layout.simple_list_item_1,
 //               bookingStrings
+
 //        );
 //        bookingListView.setAdapter(adapter);
 //
 //        bookingListView.setOnItemClickListener((parent, view, pos, id) -> {
+
+//            String selectedBooking = availableBookings.get(position);
+//
+//            openBookingDetails(selectedBooking); // id dapat to, mamaya na
+//        });
+//    }
+//
+//    private void openBookingDetails(String bookingTitle) // id dapat to, mamaya na
+//    {
+//        Intent intent = new Intent(getActivity(), BookingDetailsActivity.class); // wala pa netong act
+//        intent.putExtra("BOOK_TITLE", bookingTitle); // title muna
+//        startActivity(intent);
+//    }
+//
+//    // navigate to search activity
+//    private void openSearchActivity()
+//    {
+//        Intent intent = new Intent(getActivity(), SearchActivity.class);
+//        startActivity(intent);
+//    }
+
 //            Booking selectedBooking = availableBookings.get(pos);
 //
 //            openBookingDetails(selectedBooking);
@@ -129,6 +190,7 @@ public class HomeFragment extends Fragment {
         Intent intent = new Intent(getActivity(), SearchActivity.class);
         startActivity(intent);
     }
+
 
     @Override
     public void onDestroyView() {

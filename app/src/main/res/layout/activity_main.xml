@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFDFDFDF"
     tools:context=".MainActivity">
 
     <!-- Guidelines -->
@@ -16,26 +17,26 @@
         app:layout_constraintGuide_percent=".13" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/searchBtnGLVerticalLeft"
+        android:id="@+id/verticalLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".10" />
+        app:layout_constraintGuide_percent=".05" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/searchBtnGLVerticalRight"
+        android:id="@+id/verticalRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".90" />
+        app:layout_constraintGuide_percent=".95" />
 
     <!-- Search Bar -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/searchBtnGLVerticalLeft"
-        app:layout_constraintEnd_toEndOf="@+id/searchBtnGLVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/verticalLeft"
+        app:layout_constraintEnd_toEndOf="@+id/verticalRight"
         app:layout_constraintBottom_toTopOf="@id/searchBtnGLHorizontal">
 
         <Button
@@ -43,23 +44,48 @@
             android:id="@+id/searchBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="50dp"
-            android:minWidth="320dp"
+            android:minHeight="70dp"
+            android:minWidth="370dp"
+            android:letterSpacing="0.01"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:elevation="20dp"
+            android:elevation="5dp"
             android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inter_medium"
             android:text="Start your search"
             android:textSize="15sp"
-            app:backgroundtTint="#FFF5F5F5"
-            android:background="@drawable/search_bar" />
+            app:backgroundTint="#FFF5F5F5"
+            android:background="@drawable/search_btn_style"
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="10dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- List View -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/roomsListViewContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:paddingTop="20dp"
+        android:elevation="10dp"
+        app:layout_constraintStart_toStartOf="@+id/verticalLeft"
+        app:layout_constraintEnd_toEndOf="@+id/verticalRight"
+        app:layout_constraintTop_toBottomOf="@+id/searchBtnGLHorizontal"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view">
 
+        <ListView
+            android:id="@+id/roomsListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -67,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="#FFdfdfdf"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
