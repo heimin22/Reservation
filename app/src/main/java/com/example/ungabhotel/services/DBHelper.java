@@ -73,14 +73,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 int id = Integer.parseInt(cursor.getString(0));
                 String fullName = cursor.getString(1);
                 String contactNumber = cursor.getString(2);
-                String emailAddress = cursor.getString(4);
-                Timestamp checkIn = Timestamp.valueOf(cursor.getString(5));
-                Timestamp checkOut = Timestamp.valueOf(cursor.getString(6));
-                int guests = Integer.parseInt(cursor.getString(7));
-                String typePref = cursor.getString(8);
-                String request = cursor.getString(9);
-                String paymentInfo = cursor.getString(10);
-                String emergencyContact = cursor.getString(11);
+                String emailAddress = cursor.getString(3);
+                Timestamp checkIn = Timestamp.valueOf(cursor.getString(4));
+                Timestamp checkOut = Timestamp.valueOf(cursor.getString(5));
+                int guests = Integer.parseInt(cursor.getString(6));
+                String typePref = cursor.getString(7);
+                String request = cursor.getString(8);
+                String paymentInfo = cursor.getString(9);
+                String emergencyContact = cursor.getString(10);
 
                 bookings.add(new Booking(
                         id, room, fullName, contactNumber, emailAddress,
