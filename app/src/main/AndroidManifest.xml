@@ -13,6 +13,9 @@
         android:theme="@style/Theme.UngabHotel"
         tools:targetApi="31">
         <activity
+            android:name=".ui.search.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
