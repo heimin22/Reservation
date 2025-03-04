@@ -63,6 +63,19 @@ public class HomeFragment extends Fragment {
                 availableBookings
         );
         bookingListView.setAdapter(adapter);
+
+        bookingListView.setOnItemClickListener((parent, view, pos, id) -> {
+            String selectedBooking = availableBookings.get(position);
+
+            openBookingDetails(selectedBooking); // id dapat to, mamaya na
+        });
+    }
+
+    private void openBookingDetails(String bookingTitle) // id dapat to, mamaya na
+    {
+        Intent intent = new Intent(getActivity(), BookingDetailsActivity.class); // wala pa netong act
+        intent.putExtra("BOOK_TITLE", bookingTitle); // title muna
+        startActivity(intent);
     }
 
     // navigate to search activity
