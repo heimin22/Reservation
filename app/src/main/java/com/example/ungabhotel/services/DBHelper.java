@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import com.example.ungabhotel.model.Booking;
 import com.example.ungabhotel.model.Room;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,22 +62,37 @@ public class DBHelper extends SQLiteOpenHelper {
         return availableRooms;
     }
 
-//    public List<Booking> getBookings(){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        List<Booking> bookings;
-//        String query = "SELECT * FROM " + BOOKINGS_TABLE + " WHERE " + COL_BOOKING_ID + " != null";
-//        Cursor cursor = db.rawQuery(query, null);
-//
-//        if(cursor.moveToFirst()){
-//            do{
-//                bookings.add()
-//            }while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        db.close();
-//        return bookings;
-//    }
+    public List<Booking> getBookings(Room room){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM " + BOOKINGS_TABLE + " WHERE " + COL_BOOKING_ID + " != null";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                int id = Integer.parseInt(cursor.getString(0));
+                String fullName = cursor.getString(1);
+                String contactNumber = cursor.getString(2);
+                String emailAddress = cursor.getString(4);
+                Timestamp checkIn = Timestamp.valueOf(cursor.getString(5));
+                Timestamp checkOut = Timestamp.valueOf(cursor.getString(6));
+                int guests = Integer.parseInt(cursor.getString(7));
+                String typePref = cursor.getString(8);
+                String request = cursor.getString(9);
+                String paymentInfo = cursor.getString(10);
+                String emergencyContact = cursor.getString(11);
+
+                bookings.add(new Booking(
+                        id, room, fullName, contactNumber, emailAddress,
+                        checkIn, checkOut, guests, typePref,
+                        request, paymentInfo, emergencyContact));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return bookings;
+    }
 
 
     @Override
@@ -111,7 +128,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COL_PAYMENT_INFO + " TEXT, "
                 + COL_EMERGENCY_CONTACT + " TEXT);";
         sqLiteDatabase.execSQL(createBookingsTable);
-
     }
 
     @Override
