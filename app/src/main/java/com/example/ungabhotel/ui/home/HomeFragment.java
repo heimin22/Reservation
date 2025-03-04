@@ -114,13 +114,13 @@ public class HomeFragment extends Fragment {
 //        });
 //    }
 
-    // switch to booking details act nd passing the selected booking id
-    private void openBookingDetails(Booking booking)
-    {
-        Intent intent = new Intent(getActivity(), BookingDetailsActivite.class);
-        intent.putExtra("BOOKING_ID", booking.getId());
-        startActivity(intent);
-    }
+//    // switch to booking details act  passing the selected booking id
+//    private void openBookingDetails(Booking booking)
+//    {
+//        Intent intent = new Intent(getActivity(), BookingDetailsActivity.class);
+//        intent.putExtra("BOOKING_ID", booking.getId());
+//        startActivity(intent);
+//    }
 
     // navigate to search activity
     private void openSearchActivity()
