@@ -32,6 +32,21 @@ public class Booking {
         this.paymentInfo = paymentInfo;
         this.emergencyContact = emergencyContact;
     }
+    public Booking(int id, String fullName, String contactNumber, String emailAddress, Timestamp checkIn, Timestamp checkOut, int guests, String typePref, String request,
+                   String paymentInfo, String emergencyContact)
+    {
+        this.id = id;
+        this.fullName = fullName;
+        this.contactNumber = contactNumber;
+        this.emailAddress = emailAddress;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.guests = guests;
+        this.typePref = typePref;
+        this.request = request;
+        this.paymentInfo = paymentInfo;
+        this.emergencyContact = emergencyContact;
+    }
 
     public String getRequest() {
         return request;

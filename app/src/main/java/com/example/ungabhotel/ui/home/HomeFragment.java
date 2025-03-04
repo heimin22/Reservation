@@ -19,7 +19,6 @@ import com.example.ungabhotel.databinding.FragmentHomeBinding;
 import com.example.ungabhotel.model.Booking;
 import com.example.ungabhotel.model.Room;
 import com.example.ungabhotel.services.DBHelper;
-import com.example.ungabhotel.ui.search.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private Button searchNavButton;
+    private Button searchButton;
     private ListView roomListView;
     private DBHelper dbHelper;
 
@@ -50,8 +49,8 @@ public class HomeFragment extends Fragment {
 
     private void InitializeComponents()
     {
-        searchNavButton = binding.searchNavBtn;
-        searchNavButton.setOnClickListener(view -> openSearchActivity());
+        searchButton = binding.searchBtn;
+        searchButton.setOnClickListener(view -> openSearchActivity());
 
         roomListView = binding.roomListView;
         DisplayAvailableRoom();
@@ -66,6 +65,7 @@ public class HomeFragment extends Fragment {
         for(Room room : availableRooms)
         {
             roomStringify.add("Room: " + room.getRoomNumber());
+            roomStringify.add("Room type: " + room.getRoomType());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -105,6 +105,7 @@ public class HomeFragment extends Fragment {
 //                requireContext(),
 //                android.R.layout.simple_list_item_1,
 //               bookingStrings
+
 //        );
 //        bookingListView.setAdapter(adapter);
 //
@@ -129,6 +130,7 @@ public class HomeFragment extends Fragment {
         Intent intent = new Intent(getActivity(), SearchActivity.class);
         startActivity(intent);
     }
+
 
     @Override
     public void onDestroyView() {

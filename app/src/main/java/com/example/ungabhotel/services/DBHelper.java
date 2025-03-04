@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import com.example.ungabhotel.model.Booking;
 import com.example.ungabhotel.model.Room;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,23 +63,110 @@ public class DBHelper extends SQLiteOpenHelper {
         return availableRooms;
     }
 
-//    public List<Booking> getBookings(){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        List<Booking> bookings;
-//        String query = "SELECT * FROM " + BOOKINGS_TABLE + " WHERE " + COL_BOOKING_ID + " != null";
-//        Cursor cursor = db.rawQuery(query, null);
-//
-//        if(cursor.moveToFirst()){
-//            do{
-//                bookings.add()
-//            }while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        db.close();
-//        return bookings;
-//    }
+    public List<Room> getAvailableRooms(Timestamp start, Timestamp end, String roomType) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Room> availableRooms = new ArrayList<>();
 
+        String query = "SELECT * FROM " + ROOMS_TABLE + " WHERE " + COL_ROOM_TYPE + " = ? AND " + COL_ROOM_IS_AVAIL + " = 1";
+        Cursor cursor = db.rawQuery(query, new String[]{roomType});
+
+        if (cursor.moveToFirst()) {
+            do {
+                int roomNumber = cursor.getInt(0);
+                boolean isAvail = cursor.getInt(1) != 0;
+                String type = cursor.getString(2);
+
+                if (!isRoomBooked(db, roomNumber, start, end)) {
+                    availableRooms.add(new Room(roomNumber, isAvail, type));
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return availableRooms;
+    }
+
+    private boolean isRoomBooked(SQLiteDatabase db, int roomNumber, Timestamp start, Timestamp end) {
+        String query = "SELECT * FROM " + BOOKINGS_TABLE +
+                " WHERE " + COL_ROOM_TYPE_PREF + " = ? " +
+                " AND ((" + COL_CHECK_IN + " < ? AND " + COL_CHECK_OUT + " > ?) " +
+                " OR (" + COL_CHECK_IN + " >= ? AND " + COL_CHECK_IN + " < ?))";
+
+        Cursor cursor = db.rawQuery(query, new String[]{
+                String.valueOf(roomNumber),
+                String.valueOf(end),
+                String.valueOf(start),
+                String.valueOf(start),
+                String.valueOf(end)
+        });
+
+        boolean isBooked = cursor.getCount() > 0;
+        cursor.close();
+        return isBooked;
+    }
+    public List<Booking> getBookings(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM " + BOOKINGS_TABLE + " WHERE " + COL_BOOKING_ID + " != null";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                int id = Integer.parseInt(cursor.getString(0));
+                String fullName = cursor.getString(1);
+                String contactNumber = cursor.getString(2);
+                String emailAddress = cursor.getString(3);
+                Timestamp checkIn = Timestamp.valueOf(cursor.getString(4));
+                Timestamp checkOut = Timestamp.valueOf(cursor.getString(5));
+                int guests = Integer.parseInt(cursor.getString(6));
+                String typePref = cursor.getString(7);
+                String request = cursor.getString(8);
+                String paymentInfo = cursor.getString(9);
+                String emergencyContact = cursor.getString(10);
+
+                bookings.add(new Booking(
+                        id, fullName, contactNumber, emailAddress,
+                        checkIn, checkOut, guests, typePref,
+                        request, paymentInfo, emergencyContact));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return bookings;
+    }
+    public List<Booking> getBookings(Room room){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM " + BOOKINGS_TABLE + " WHERE " + COL_BOOKING_ID + " != null";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                int id = Integer.parseInt(cursor.getString(0));
+                String fullName = cursor.getString(1);
+                String contactNumber = cursor.getString(2);
+                String emailAddress = cursor.getString(3);
+                Timestamp checkIn = Timestamp.valueOf(cursor.getString(4));
+                Timestamp checkOut = Timestamp.valueOf(cursor.getString(5));
+                int guests = Integer.parseInt(cursor.getString(6));
+                String typePref = cursor.getString(7);
+                String request = cursor.getString(8);
+                String paymentInfo = cursor.getString(9);
+                String emergencyContact = cursor.getString(10);
+
+                bookings.add(new Booking(
+                        id, room, fullName, contactNumber, emailAddress,
+                        checkIn, checkOut, guests, typePref,
+                        request, paymentInfo, emergencyContact));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return bookings;
+    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -111,7 +201,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COL_PAYMENT_INFO + " TEXT, "
                 + COL_EMERGENCY_CONTACT + " TEXT);";
         sqLiteDatabase.execSQL(createBookingsTable);
-
     }
 
     @Override
